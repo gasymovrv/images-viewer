@@ -11,7 +11,6 @@ public interface FileObjectService {
 	FileObject findById(Long id);
 	
 	List<FileObject> findByName(String name);
-	
-	FileObject saveOrUpdate(FileObject fileObject);
 
+	List<FileObject> findByDirectoryName(String name);
 }

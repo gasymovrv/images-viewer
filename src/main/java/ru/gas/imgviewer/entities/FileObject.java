@@ -3,6 +3,7 @@ package ru.gas.imgviewer.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.Serializable;
 
 @Entity(name = "file_object")
@@ -40,4 +41,11 @@ public class FileObject implements Serializable, CommonEntity {
 	@JoinColumn(name="directory_id")
 	@Getter @Setter
 	private Directory directory;
+
+	public FileObject fillFromFile(File file){
+		this.setFilePath(file.getAbsolutePath());
+		this.setName(file.getName());
+		this.setFileSize(file.getTotalSpace());
+		return this;
+	}
 }

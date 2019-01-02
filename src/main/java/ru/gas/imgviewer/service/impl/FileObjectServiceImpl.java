@@ -27,13 +27,13 @@ public class FileObjectServiceImpl implements FileObjectService {
 	}
 
 	@Override
-	public FileObject saveOrUpdate(FileObject expense) {
-		return fileObjectRepository.save(expense);
+	public List<FileObject> findByName(String name) {
+		return fileObjectRepository.findByName(name);
 	}
 
 	@Override
-	public List<FileObject> findByName(String name) {
-		return fileObjectRepository.findByName(name);
+	public List<FileObject> findByDirectoryName(String name) {
+		return fileObjectRepository.findByDirectoryName(name);
 	}
 
 }

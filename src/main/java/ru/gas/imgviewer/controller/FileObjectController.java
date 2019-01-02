@@ -30,4 +30,11 @@ public class FileObjectController {
         return fileObjectService.findByName(name);
     }
 
+
+    @GetMapping("/findByDirectoryName/{name}")
+    public Iterable<FileObject> findByDirectoryName(@PathVariable String name) {
+        return fileObjectService.findByDirectoryName(name);
+    }
+
+
 }

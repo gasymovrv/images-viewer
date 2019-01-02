@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,4 +46,10 @@ public class Directory implements Serializable, CommonEntity {
     @OneToMany(mappedBy="parent", cascade = CascadeType.ALL)
     @Getter @Setter
     private Set<Directory> children = new HashSet<>(0);
+
+    public Directory fillFromFile(File f){
+        this.setName(f.getName());
+        this.setDirectoryPath(f.getAbsolutePath());
+        return this;
+    }
 }
