@@ -35,8 +35,8 @@ public class ImgviewerRestApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedMethods("DELETE", "GET", "POST")
-						.allowedOrigins("*");
+						.allowedMethods("GET", "POST")
+						.allowedOrigins("null");//такой хост при запросе с html, лежащей на компе
 			}
 		};
 	}
