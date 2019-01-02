@@ -1,0 +1,133 @@
+{
+	"id": "3e71968e-fce2-844f-83a0-5c5772bd8089",
+	"name": "images_viewer",
+	"description": "",
+	"order": [],
+	"folders": [
+		{
+			"name": "dir",
+			"description": "",
+			"collectionId": "3e71968e-fce2-844f-83a0-5c5772bd8089",
+			"order": [
+				"03db3f53-f021-d6e4-808d-ad10d68b4c81"
+			],
+			"owner": 0,
+			"folders_order": [],
+			"id": "827b2529-8345-b3c1-4e25-43c159648ef7"
+		},
+		{
+			"name": "files",
+			"description": "",
+			"collectionId": "3e71968e-fce2-844f-83a0-5c5772bd8089",
+			"order": [
+				"2e346690-0f1c-fd57-b7b5-beec780192ea",
+				"9397e75c-378b-cdc5-6a0e-ec775bd63c2d",
+				"8c4c23b8-b04c-ba6e-239d-549763a8a84b"
+			],
+			"owner": 0,
+			"folders_order": [],
+			"id": "a212d356-78f2-7dec-1774-b12f9b0f1acd"
+		}
+	],
+	"folders_order": [
+		"a212d356-78f2-7dec-1774-b12f9b0f1acd",
+		"827b2529-8345-b3c1-4e25-43c159648ef7"
+	],
+	"timestamp": 1537852139566,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "03db3f53-f021-d6e4-808d-ad10d68b4c81",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8080/api/directories/findAll",
+			"folder": "827b2529-8345-b3c1-4e25-43c159648ef7",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1546434604821,
+			"name": "findAll",
+			"description": "",
+			"collectionId": "3e71968e-fce2-844f-83a0-5c5772bd8089",
+			"responses": []
+		},
+		{
+			"id": "2e346690-0f1c-fd57-b7b5-beec780192ea",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8080/api/files/findAll",
+			"folder": "a212d356-78f2-7dec-1774-b12f9b0f1acd",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1546436616961,
+			"name": "findAll",
+			"description": "",
+			"collectionId": "3e71968e-fce2-844f-83a0-5c5772bd8089",
+			"responses": []
+		},
+		{
+			"id": "8c4c23b8-b04c-ba6e-239d-549763a8a84b",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8080/api/files/findById/1",
+			"folder": "a212d356-78f2-7dec-1774-b12f9b0f1acd",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1546436678097,
+			"name": "findById",
+			"description": "",
+			"collectionId": "3e71968e-fce2-844f-83a0-5c5772bd8089",
+			"responses": []
+		},
+		{
+			"id": "9397e75c-378b-cdc5-6a0e-ec775bd63c2d",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8080/api/files/findByDirectoryName/2018_09_09 Роджер",
+			"folder": "a212d356-78f2-7dec-1774-b12f9b0f1acd",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1546444557717,
+			"name": "findByDirectoryName",
+			"description": "",
+			"collectionId": "3e71968e-fce2-844f-83a0-5c5772bd8089",
+			"responses": []
+		}
+	]
+}
