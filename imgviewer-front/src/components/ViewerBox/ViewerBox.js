@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import Pagination from 'react-js-pagination';
-import {findFilesWithPaging} from "../../api/filesApi";
+import {findFilesByDirectoryId, findFilesWithPaging} from "../../api/filesApi";
 import {Container, Row} from "reactstrap";
 import Item from "../Item";
 
@@ -23,12 +23,20 @@ export default class ViewerBox extends React.Component {
     }
 
     loadFilesWithPaging = (activePage, itemsCountPerPage)=>{
-        findFilesWithPaging(
-            (entities, totalElements) => {
-                this.setState({files: [...entities], totalItemsCount: totalElements})
-            },
-            activePage,
-            itemsCountPerPage)
+        const {dir} = this.props;
+        if (dir) {
+            findFilesByDirectoryId((files) => {
+                this.setState({files: [...files]});
+            }, dir.id)
+        } else {
+            findFilesWithPaging(
+                (entities, totalElements) => {
+                    this.setState({files: [...entities], totalItemsCount: totalElements})
+                },
+                activePage,
+                itemsCountPerPage
+                )
+        }
     };
 
     render() {
@@ -48,16 +56,16 @@ export default class ViewerBox extends React.Component {
                     </section>
                 </Row>
                 <Row>
-                    <Pagination
-                        itemClass="page-item"
-                        linkClass="page-link"
-                        aria-label="Page navigation example"
-                        activePage={activePage}
-                        itemsCountPerPage={itemsCountPerPage}
-                        totalItemsCount={totalItemsCount}
-                        pageRangeDisplayed={5}
-                        onChange={this.handlePageChange}
-                    />
+                    {/*<Pagination*/}
+                        {/*itemClass="page-item"*/}
+                        {/*linkClass="page-link"*/}
+                        {/*aria-label="Page navigation example"*/}
+                        {/*activePage={activePage}*/}
+                        {/*itemsCountPerPage={itemsCountPerPage}*/}
+                        {/*totalItemsCount={totalItemsCount}*/}
+                        {/*pageRangeDisplayed={5}*/}
+                        {/*onChange={this.handlePageChange}*/}
+                    {/*/>*/}
                 </Row>
             </Fragment>
         )

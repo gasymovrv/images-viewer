@@ -45,4 +45,9 @@ public class FileObjectServiceImpl implements FileObjectService {
 		return fileObjectRepository.findByDirectoryName(name);
 	}
 
+	@Override
+	public List<FileObject> findByDirectoryId(Long id) {
+		return fileObjectRepository.findByDirectoryId(id);
+	}
+
 }

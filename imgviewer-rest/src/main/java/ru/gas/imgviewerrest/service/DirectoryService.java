@@ -12,6 +12,5 @@ public interface DirectoryService {
 	
 	List<Directory> findByName(String name);
 
-	Directory saveOrUpdate(Directory directory);
-
+	Directory findByParentIsNull();
 }

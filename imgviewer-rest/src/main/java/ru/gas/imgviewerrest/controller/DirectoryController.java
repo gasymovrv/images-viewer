@@ -1,5 +1,6 @@
 package ru.gas.imgviewerrest.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/directories")
+@Slf4j
 public class DirectoryController {
 
     @Autowired
@@ -21,6 +23,11 @@ public class DirectoryController {
     @GetMapping("/findAll")
     public List<Directory> findAll() {
         return directoryService.findAll();
+    }
+
+    @GetMapping("/findRoot")
+    public Directory findRoot() {
+        return directoryService.findByParentIsNull();
     }
 
     @GetMapping("/findById/{id}")

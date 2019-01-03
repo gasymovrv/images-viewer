@@ -3,10 +3,12 @@ package ru.gas.imgviewerrest.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import ru.gas.imgviewerrest.entities.Directory;
 import ru.gas.imgviewerrest.repositories.DirectoryRepository;
 import ru.gas.imgviewerrest.service.DirectoryService;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -27,13 +29,17 @@ public class DirectoryServiceImpl implements DirectoryService {
 	}
 
 	@Override
-	public Directory saveOrUpdate(Directory expense) {
-		return directoryRepository.save(expense);
-	}
-
-	@Override
 	public List<Directory> findByName(String name) {
 		return directoryRepository.findByName(name);
 	}
 
+
+	@Override
+	public Directory findByParentIsNull() {
+		List<Directory> dirs = directoryRepository.findByParentIsNull();
+		if(!CollectionUtils.isEmpty(dirs)){
+			return dirs.get(0);
+		}
+		return null;
+	}
 }

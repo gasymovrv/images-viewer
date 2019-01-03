@@ -24,4 +24,10 @@ export function findFilesByDirectoryName(fn, name) {
         .then(resp => fn(resp));
 }
 
+export function findFilesByDirectoryId(fn, id) {
+    return fetch(`${api}/findByDirectoryId/${id}`)
+        .then(r => r.json())
+        .then(resp => fn(resp));
+}
+
 

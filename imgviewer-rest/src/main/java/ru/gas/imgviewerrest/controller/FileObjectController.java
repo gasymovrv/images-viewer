@@ -44,5 +44,10 @@ public class FileObjectController {
         return fileObjectService.findByDirectoryName(name);
     }
 
+    @GetMapping("/findByDirectoryId/{id}")
+    public Iterable<FileObject> findByDirectoryId(@PathVariable Long id) {
+        return fileObjectService.findByDirectoryId(id);
+    }
+
 
 }

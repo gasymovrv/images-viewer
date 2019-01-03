@@ -42,7 +42,6 @@ public class Directory implements Serializable, CommonEntity {
     @Getter @Setter
     private Directory parent;
 
-    @JsonIgnore
     @OneToMany(mappedBy="parent", cascade = CascadeType.ALL)
     @Getter @Setter
     private Set<Directory> children = new HashSet<>(0);

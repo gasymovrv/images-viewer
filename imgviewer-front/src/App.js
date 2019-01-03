@@ -1,33 +1,27 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import ViewerBox from "./components/ViewerBox";
-import {Container, Col, Row, Nav, NavItem, Navbar, NavLink} from "reactstrap";
+import {Container, Col, Row} from "reactstrap";
+import Navigation from "./components/Navigation";
 
 export default class App extends React.Component {
+    state = {
+        activeDir: null
+    };
+
+    setActiveDir = (dir)=>{
+        this.setState({activeDir:dir})
+    };
+
     render() {
         return (
             <div className='section'>
-                <Container>
+                <Container fluid>
                     <Row>
-                        <Col sm='3'>
-                            <Navbar color="faded" light>
-                                <Nav navbar>
-                                    <NavItem>
-                                        <NavLink href="/components/">Папка 1</NavLink>
-                                    </NavItem>
-                                    <NavItem>
-                                        <NavLink href="/components/">Папка 1</NavLink>
-                                    </NavItem>
-                                    <NavItem>
-                                        <NavLink href="/components/">Папка 1</NavLink>
-                                    </NavItem>
-                                    <NavItem>
-                                        <NavLink href="/components/">Папка 1</NavLink>
-                                    </NavItem>
-                                </Nav>
-                            </Navbar>
+                        <Col xs="3">
+                            <Navigation dirs={null} setActiveDir={this.setActiveDir}/>
                         </Col>
-                        <Col sm='9'>
-                            <ViewerBox/>
+                        <Col  xs="9">
+                            <ViewerBox dir={this.state.activeDir}/>
                         </Col>
                     </Row>
                 </Container>

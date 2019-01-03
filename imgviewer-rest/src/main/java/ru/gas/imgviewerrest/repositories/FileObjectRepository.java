@@ -19,4 +19,6 @@ public interface FileObjectRepository extends JpaRepository<FileObject, Long> {
 	List<FileObject> findByName(String name);
 
 	List<FileObject> findByDirectoryName(String name);
+
+	List<FileObject> findByDirectoryId(Long id);
 }
