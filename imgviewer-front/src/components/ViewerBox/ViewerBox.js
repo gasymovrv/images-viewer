@@ -1,6 +1,8 @@
 import React, {Fragment} from 'react';
 import Pagination from 'react-js-pagination';
 import {findFilesWithPaging} from "../../api/filesApi";
+import {Container, Row} from "reactstrap";
+import Item from "../Item";
 
 export default class ViewerBox extends React.Component {
     state = {
@@ -32,22 +34,31 @@ export default class ViewerBox extends React.Component {
     render() {
         const {files, activePage, itemsCountPerPage, totalItemsCount} = this.state;
         const imgsOrVideos = files.map((file)=>{
-            if (file.isVideo) {
-                return <video key={file.id} src={`file:///${file.filePath}`} width='500px' controls>Видео не загрузилось</video>
-            } else {
-                return <img key={file.id} src={`file:///${file.filePath}`} width='400px'/>;
-            }
+            return <Item key={file.id} file={file}/>
         });
         return (
             <Fragment>
-                {imgsOrVideos}
-                <Pagination
-                    activePage={activePage}
-                    itemsCountPerPage={itemsCountPerPage}
-                    totalItemsCount={totalItemsCount}
-                    pageRangeDisplayed={5}
-                    onChange={this.handlePageChange}
-                />
+                <Row>
+                    <section className="gallery-block grid-gallery">
+                        <Container>
+                            <Row>
+                                {imgsOrVideos}
+                            </Row>
+                        </Container>
+                    </section>
+                </Row>
+                <Row>
+                    <Pagination
+                        itemClass="page-item"
+                        linkClass="page-link"
+                        aria-label="Page navigation example"
+                        activePage={activePage}
+                        itemsCountPerPage={itemsCountPerPage}
+                        totalItemsCount={totalItemsCount}
+                        pageRangeDisplayed={5}
+                        onChange={this.handlePageChange}
+                    />
+                </Row>
             </Fragment>
         )
     }
