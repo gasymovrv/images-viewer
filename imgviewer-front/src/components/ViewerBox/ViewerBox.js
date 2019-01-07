@@ -5,12 +5,21 @@ import {Container, Row} from "reactstrap";
 import Item from "../Item";
 
 export default class ViewerBox extends React.Component {
-    state = {
-        files:[],
-        activePage: 1,
-        itemsCountPerPage: 10,
-        totalItemsCount: 0
-    };
+    constructor(props){
+        super(props);
+        const {match} = props;
+        let dirId = null;
+        if (match && match.params && match.params.id) {
+            dirId = match.params.id;
+        }
+        this.state = {
+            dirId: dirId,
+            files:[],
+            activePage: 1,
+            itemsCountPerPage: 10,
+            totalItemsCount: 0
+        };
+    }
 
     handlePageChange = (pageNumber) => {
         this.setState({activePage: pageNumber});
@@ -18,25 +27,28 @@ export default class ViewerBox extends React.Component {
     };
 
     componentDidMount(){
+        console.log('viewerbox');
         const {activePage, itemsCountPerPage} = this.state;
         this.loadFilesWithPaging(activePage, itemsCountPerPage)
     }
 
-    loadFilesWithPaging = (activePage, itemsCountPerPage)=>{
-        const {dir} = this.props;
-        if (dir) {
-            findFilesByDirectoryId((files) => {
-                this.setState({files: [...files]});
-            }, dir.id)
-        } else {
-            findFilesWithPaging(
-                (entities, totalElements) => {
-                    this.setState({files: [...entities], totalItemsCount: totalElements})
-                },
-                activePage,
-                itemsCountPerPage
-                )
+    componentDidUpdate(prevProps, prevState){
+        const {match} = this.props;
+        if (match && match.params && match.params.id && match.params.id !== prevState.dirId) {
+            const {activePage, itemsCountPerPage} = this.state;
+            this.setState({dirId: match.params.id});
+            this.loadFilesWithPaging(activePage, itemsCountPerPage)
         }
+        console.log('componentDidUpdate');
+    }
+
+    loadFilesWithPaging = (activePage, itemsCountPerPage) => {
+        const {match} = this.props;
+        console.log("From link, id: ", match.params.id);
+        findFilesByDirectoryId((files) => {
+            console.log(files);
+            this.setState({files: [...files]});
+        }, match.params.id)
     };
 
     render() {

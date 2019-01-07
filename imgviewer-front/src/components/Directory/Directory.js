@@ -1,23 +1,14 @@
-import React, {Fragment} from 'react';
+import React from 'react';
+import {Link} from 'react-router-dom';
 import Navigation from "../Navigation/Navigation";
 
 
-export default class Directory extends React.PureComponent {
+export default class Directory extends React.Component {
     constructor(props){
         super(props);
         this.state={
             active : props.dir.active
         }
-    }
-
-    static getDerivedStateFromProps(nextProps, prevState){
-        if(!prevState.active && nextProps.dir.active){
-            //todo Тут косяк приводит к циклическому обновлению
-            //Возможно надо переделать на роутинг
-            nextProps.setActiveDir(nextProps.dir);
-            console.log(nextProps.dir.name);
-        }
-        return null;
     }
 
     render() {
@@ -35,9 +26,8 @@ export default class Directory extends React.PureComponent {
         return (
             <ul>
                 <li
-                    onClick={onClick(id)}
                     className={classes}>
-                    {name}
+                    <Link onClick={onClick(id)} to={`/dirs/${id}`}>{name}</Link>
                 </li>
                 {children}
             </ul>

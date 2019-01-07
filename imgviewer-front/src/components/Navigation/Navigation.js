@@ -25,10 +25,12 @@ export default class Navigation extends React.Component {
     }
 
     clickHandler = (id) => (event) => {
+        console.log('clickHandler');
         let updatedDirectories = [...this.state.directories];
         updatedDirectories.forEach((dir)=>{
             if(dir.id === id){
                 dir.active = !dir.active;
+                console.log('clickHandler, dir.active, id',dir.active, dir.id);
             } else {
                 dir.active = false;
             }
@@ -39,11 +41,10 @@ export default class Navigation extends React.Component {
 
     render() {
         const {directories} = this.state;
-        const {setActiveDir} = this.props;
         let directoriesList = null;
         if(directories) {
             directoriesList = directories.map((dir) => {
-                return <Directory onClick={this.clickHandler} key={dir.id} dir={dir} setActiveDir={setActiveDir}/>
+                return <Directory onClick={this.clickHandler} key={dir.id} dir={dir} {...this.props}/>
             });
         }
         return (
