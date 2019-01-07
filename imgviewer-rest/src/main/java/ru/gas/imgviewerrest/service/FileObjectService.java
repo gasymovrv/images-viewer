@@ -17,5 +17,5 @@ public interface FileObjectService {
 
 	List<FileObject> findByDirectoryName(String name);
 
-	List<FileObject> findByDirectoryId(Long id);
+	PageDto<FileObject> findByDirectoryId(Long id, int page, int size);
 }

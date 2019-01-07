@@ -46,8 +46,9 @@ public class FileObjectServiceImpl implements FileObjectService {
 	}
 
 	@Override
-	public List<FileObject> findByDirectoryId(Long id) {
-		return fileObjectRepository.findByDirectoryId(id);
+	public PageDto<FileObject> findByDirectoryId(Long id, int page, int size) {
+		Page<FileObject> somethings = fileObjectRepository.findByDirectoryId(id, PageRequest.of(page, size));
+		return new PageDto<>(somethings.getTotalElements(), somethings.getContent());
 	}
 
 }

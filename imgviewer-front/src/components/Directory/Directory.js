@@ -25,9 +25,8 @@ export default class Directory extends React.Component {
         }
         return (
             <ul>
-                <li
-                    className={classes}>
-                    <Link onClick={onClick(id)} to={`/dirs/${id}`}>{name}</Link>
+                <li>
+                    <Link onClick={onClick(id)} className={classes} to={`/dirs/${id}`}>{name}</Link>
                 </li>
                 {children}
             </ul>

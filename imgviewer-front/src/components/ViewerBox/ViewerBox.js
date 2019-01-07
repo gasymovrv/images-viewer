@@ -4,6 +4,11 @@ import {findFilesByDirectoryId, findFilesWithPaging} from "../../api/filesApi";
 import {Container, Row} from "reactstrap";
 import Item from "../Item";
 
+/**
+ * Компонент для отображения галлереи
+ * Испольовать только через роутинг с передачей параметра id (id директории), например так:
+ * <Route path={`/dirs/:id`} component={ViewerBox}/>
+ */
 export default class ViewerBox extends React.Component {
     constructor(props){
         super(props);
@@ -36,7 +41,10 @@ export default class ViewerBox extends React.Component {
         const {match} = this.props;
         if (match && match.params && match.params.id && match.params.id !== prevState.dirId) {
             const {activePage, itemsCountPerPage} = this.state;
-            this.setState({dirId: match.params.id});
+            this.setState({
+                dirId: match.params.id,
+                activePage: 1
+            });
             this.loadFilesWithPaging(activePage, itemsCountPerPage)
         }
         console.log('componentDidUpdate');
@@ -44,11 +52,13 @@ export default class ViewerBox extends React.Component {
 
     loadFilesWithPaging = (activePage, itemsCountPerPage) => {
         const {match} = this.props;
-        console.log("From link, id: ", match.params.id);
-        findFilesByDirectoryId((files) => {
-            console.log(files);
-            this.setState({files: [...files]});
-        }, match.params.id)
+        findFilesByDirectoryId(
+            (entities, totalElements) => {
+                this.setState({files: [...entities], totalItemsCount: totalElements})
+            },
+            match.params.id,
+            activePage,
+            itemsCountPerPage)
     };
 
     render() {
@@ -68,16 +78,16 @@ export default class ViewerBox extends React.Component {
                     </section>
                 </Row>
                 <Row>
-                    {/*<Pagination*/}
-                        {/*itemClass="page-item"*/}
-                        {/*linkClass="page-link"*/}
-                        {/*aria-label="Page navigation example"*/}
-                        {/*activePage={activePage}*/}
-                        {/*itemsCountPerPage={itemsCountPerPage}*/}
-                        {/*totalItemsCount={totalItemsCount}*/}
-                        {/*pageRangeDisplayed={5}*/}
-                        {/*onChange={this.handlePageChange}*/}
-                    {/*/>*/}
+                    <Pagination
+                        itemClass="page-item"
+                        linkClass="page-link"
+                        aria-label="Page navigation example"
+                        activePage={activePage}
+                        itemsCountPerPage={itemsCountPerPage}
+                        totalItemsCount={totalItemsCount}
+                        pageRangeDisplayed={5}
+                        onChange={this.handlePageChange}
+                    />
                 </Row>
             </Fragment>
         )
