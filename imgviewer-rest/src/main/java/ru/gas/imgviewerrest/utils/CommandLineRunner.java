@@ -47,7 +47,10 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
         rootDirectory.setDirectoryPath(root.getAbsolutePath());
         Files.walkFileTree(
                 Paths.get(rootDirectory.getDirectoryPath()),
-                new SearchFileVisitor(rootDirectory));
+                new DirectoriesTreeVisitor(rootDirectory));
+        Files.walkFileTree(
+                Paths.get(rootDirectory.getDirectoryPath()),
+                new FilesTreeVisitor(rootDirectory));
         directoryRepository.save(rootDirectory);
     }
 }

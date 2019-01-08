@@ -51,4 +51,12 @@ public class Directory implements Serializable, CommonEntity {
         this.setDirectoryPath(f.getAbsolutePath());
         return this;
     }
+
+    public boolean equalsToFile(File f){
+        return directoryPath.equals(f.getAbsolutePath());
+    }
+
+    public boolean equalsToPath(String path){
+        return directoryPath.equals(path);
+    }
 }
