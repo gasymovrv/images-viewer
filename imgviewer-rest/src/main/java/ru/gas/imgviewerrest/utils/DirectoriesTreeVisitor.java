@@ -23,11 +23,11 @@ public class DirectoriesTreeVisitor extends SimpleFileVisitor<Path> {
 
     @Override
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-        setChildrenDirectories(dir, attrs);
+        fillRootFromPath(dir, attrs);
         return FileVisitResult.CONTINUE;
     }
 
-    private void setChildrenDirectories(Path pathDir, BasicFileAttributes attrs) {
+    private void fillRootFromPath(Path pathDir, BasicFileAttributes attrs) {
         Directory resultDirectory = new Directory();
         resultDirectory.fillFromFile(pathDir.toFile());
 

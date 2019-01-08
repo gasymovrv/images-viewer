@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Navigation from "../Navigation/Navigation";
+import './style.css'
 
 
 export default class Directory extends React.Component {
@@ -21,10 +22,14 @@ export default class Directory extends React.Component {
         let children = null;
         if (active && dir.children) {
             console.log(dir.children);
-            children = <Navigation dirs={dir.children}/>
+            children = (
+                <li>
+                    <Navigation dirs={dir.children}/>
+                </li>
+            )
         }
         return (
-            <ul>
+            <ul className='directory-list'>
                 <li>
                     <Link onClick={onClick(id)} className={classes} to={`/dirs/${id}`}>{name}</Link>
                 </li>

@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.File;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity(name = "file_object")
 @ToString(exclude = "directory")
@@ -36,6 +37,10 @@ public class FileObject implements Serializable, CommonEntity {
 	@Column(name = "ext")
 	@Getter @Setter
 	private String ext;
+
+	@Column(name = "last_modified")
+	@Getter @Setter
+	private LocalDateTime lastModified;
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="directory_id")

@@ -8,7 +8,6 @@ import ru.gas.imgviewerrest.entities.Directory;
 import ru.gas.imgviewerrest.repositories.DirectoryRepository;
 import ru.gas.imgviewerrest.service.DirectoryService;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service

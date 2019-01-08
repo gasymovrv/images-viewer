@@ -20,5 +20,7 @@ public interface FileObjectRepository extends JpaRepository<FileObject, Long> {
 
 	List<FileObject> findByDirectoryName(String name);
 
-	Page<FileObject> findByDirectoryId(Long id, Pageable pageable);
+	Page<FileObject> findByDirectoryIdOrderByNameAsc(Long id, Pageable pageable);
+
+	Page<FileObject> findByDirectoryIdOrderByLastModifiedAsc(Long id, Pageable pageable);
 }

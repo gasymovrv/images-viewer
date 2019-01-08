@@ -43,7 +43,15 @@ export default class Navigation extends React.Component {
         const {directories} = this.state;
         let directoriesList = null;
         if(directories) {
-            directoriesList = directories.map((dir) => {
+            const sortedDirs = [...directories];
+            sortedDirs.sort((a, b)=> {
+                if(a.name <= b.name){
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
+            directoriesList = sortedDirs.map((dir) => {
                 return <Directory onClick={this.clickHandler} key={dir.id} dir={dir} {...this.props}/>
             });
         }

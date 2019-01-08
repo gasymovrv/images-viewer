@@ -1,5 +1,8 @@
 package ru.gas.imgviewerrest.utils;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
 import lombok.extern.slf4j.Slf4j;
 import ru.gas.imgviewerrest.entities.Directory;
 import ru.gas.imgviewerrest.entities.FileObject;
@@ -10,6 +13,10 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 
 /**
@@ -40,15 +47,16 @@ public class FilesTreeVisitor extends SimpleFileVisitor<Path> {
             case "mpeg":
             case "mpg":
             case "3gp":
-                setChildrenFiles(file, attrs);
+                fillRootFromPath(file, attrs);
         }
         return FileVisitResult.CONTINUE;
     }
 
-    private void setChildrenFiles(Path pathFile, BasicFileAttributes attrs) {
+    private void fillRootFromPath(Path pathFile, BasicFileAttributes attrs) {
         FileObject resultFileObject = new FileObject();
         File file = pathFile.toFile();
         resultFileObject.fillFromFile(file);
+        resultFileObject.setLastModified(getLastModifiedDateFromMetadata(file));
         resultFileObject.setFileSize(attrs.size());
         String ext = file.getName().replaceAll("^.*\\.", "");
         switch (ext.toLowerCase()) {
@@ -76,4 +84,34 @@ public class FilesTreeVisitor extends SimpleFileVisitor<Path> {
             tempDirectory.getFiles().add(resultFileObject);
         }
     }
+
+    //todo Очень замедляет сканирование
+    //Если не используем, то нужно сменить метод репозитория
+    //findByDirectoryIdOrderByLastModifiedAsc (сортировка по дате съемки) на
+    //findByDirectoryIdOrderByNameAsc (сортировка по имени файла)
+    private LocalDateTime getLastModifiedDateFromMetadata(File f){
+        LocalDateTime date = null;
+        try {
+            //Пробуем получить реальную дату съемки
+            Metadata metadata = ImageMetadataReader.readMetadata(f);
+            ExifSubIFDDirectory exif = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
+            if (exif != null) {
+                date = convertMillisToLocalDateUTC(exif.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL).getTime());
+            }
+        } catch (Exception ignored) {}
+        //Если не получилось, то просто получаем дату создания файла
+        if (date == null) {
+            date = convertMillisToLocalDate(f.lastModified());
+        }
+        return date;
+    }
+
+    private LocalDateTime convertMillisToLocalDate(Long l) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(l), ZoneId.systemDefault());
+    }
+
+    private LocalDateTime convertMillisToLocalDateUTC(Long l) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(l), ZoneOffset.UTC);
+    }
+
 }
