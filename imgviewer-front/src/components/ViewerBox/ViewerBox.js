@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import Pagination from 'react-js-pagination';
 import {findFilesByDirectoryId, findFilesWithPaging} from "../../api/filesApi";
-import {Container, Row} from "reactstrap";
+import {Button, Col, Container, Row} from "reactstrap";
 import Item from "../Item";
 
 /**
@@ -19,6 +19,7 @@ export default class ViewerBox extends React.Component {
         }
         this.state = {
             dirId: dirId,
+            zoom: 4,
             files:[],
             activePage: 1,
             itemsCountPerPage: 10,
@@ -29,6 +30,26 @@ export default class ViewerBox extends React.Component {
     handlePageChange = (pageNumber) => {
         this.setState({activePage: pageNumber});
         this.loadFilesWithPaging(pageNumber, this.state.itemsCountPerPage);
+    };
+
+    handleZoomPlus = () => {
+        this.setState((prSt)=>{
+            let resultZoom = prSt.zoom+1;
+            if(resultZoom>12){
+                resultZoom--;
+            }
+            return {zoom: resultZoom}
+        });
+    };
+
+    handleZoomMinus = () => {
+        this.setState((prSt)=>{
+            let resultZoom = prSt.zoom-1;
+            if(resultZoom<1){
+                resultZoom++;
+            }
+            return {zoom: resultZoom}
+        });
     };
 
     componentDidMount(){
@@ -62,15 +83,23 @@ export default class ViewerBox extends React.Component {
     };
 
     render() {
-        const {files, activePage, itemsCountPerPage, totalItemsCount} = this.state;
+        const {files, activePage, itemsCountPerPage, totalItemsCount, zoom} = this.state;
         const imgsOrVideos = files.map((file)=>{
-            return <Item key={file.id} file={file}/>
+            return <Item key={file.id} file={file} zoom={zoom}/>
         });
         return (
             <Fragment>
                 <Row>
                     <section className="gallery-block grid-gallery">
                         <Container>
+                            <Row>
+                                <Col sm="12" md={{ size: 2, offset: 11 }}>
+                                    <p>
+                                    <Button color="primary" onClick={this.handleZoomPlus}>+</Button>{' '}
+                                    <Button color="primary" onClick={this.handleZoomMinus}>-</Button>
+                                    </p>
+                                </Col>
+                            </Row>
                             <Row>
                                 {imgsOrVideos}
                             </Row>

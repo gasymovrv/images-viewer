@@ -19,8 +19,6 @@ public class ImgviewerRestApplication {
 // 		context.close();
 	}
 
-// теперь не нужно, т.к. рест-запросы с того же сервера
-
 	/**
 	 * Глобальное разрешение CORS
 	 * Википедия:
