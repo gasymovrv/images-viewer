@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import Navigation from "../Navigation/Navigation";
 import './style.css'
 
@@ -13,7 +12,7 @@ export default class Directory extends React.Component {
     }
 
     render() {
-        const {dir, onClick} = this.props;
+        const {dir, onClick, history} = this.props;
         const {active, id, name} = dir;
         let classes = "nav-link";
         if (active) {
@@ -21,17 +20,16 @@ export default class Directory extends React.Component {
         }
         let children = null;
         if (active && dir.children) {
-            console.log(dir.children);
             children = (
                 <li>
-                    <Navigation dirs={dir.children}/>
+                    <Navigation parent={dir} dirs={dir.children} history={history}/>
                 </li>
             )
         }
         return (
             <ul className='directory-list'>
                 <li>
-                    <Link onClick={onClick(id)} className={classes} to={`/dirs/${id}`}>{name}</Link>
+                    <a onClick={onClick(id)} className={classes} href="#">{name}</a>
                 </li>
                 {children}
             </ul>

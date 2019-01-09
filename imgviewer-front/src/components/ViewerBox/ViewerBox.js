@@ -53,7 +53,6 @@ export default class ViewerBox extends React.Component {
     };
 
     componentDidMount(){
-        console.log('viewerbox');
         const {activePage, itemsCountPerPage} = this.state;
         this.loadFilesWithPaging(activePage, itemsCountPerPage)
     }
@@ -68,7 +67,6 @@ export default class ViewerBox extends React.Component {
             });
             this.loadFilesWithPaging(activePage, itemsCountPerPage)
         }
-        console.log('componentDidUpdate');
     }
 
     loadFilesWithPaging = (activePage, itemsCountPerPage) => {

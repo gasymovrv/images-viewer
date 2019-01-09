@@ -1,3 +1,7 @@
 ul.directory-list{
     list-style-type: none; /* Убираем маркеры */
 }
+
+ul.directory-list li{
+    padding: 1px;
+}

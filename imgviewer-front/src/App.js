@@ -13,7 +13,7 @@ export default class App extends React.Component {
                     <Container fluid>
                         <Row>
                             <Col xs="3" className='nav-sidebar'>
-                                <Navigation dirs={null}/>
+                                <Route component={(props)=><Navigation dirs={null} {...props}/>} />
                             </Col>
                             <Col xs="9">
                                 <Route path={`/dirs/:id(\\d+)`} component={ViewerBox}/>

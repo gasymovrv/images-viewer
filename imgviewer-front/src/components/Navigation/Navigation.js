@@ -25,18 +25,37 @@ export default class Navigation extends React.Component {
     }
 
     clickHandler = (id) => (event) => {
-        console.log('clickHandler');
+        event.preventDefault();
+        const {history, parent} = this.props;
         let updatedDirectories = [...this.state.directories];
         updatedDirectories.forEach((dir)=>{
             if(dir.id === id){
                 dir.active = !dir.active;
-                console.log('clickHandler, dir.active, id',dir.active, dir.id);
+                let path =`/dirs/${id}`;
+                if(dir.active){
+                    history.replace(path);
+                } else {
+                    if(parent){
+                        path = `/dirs/${parent.id}`;
+                    }
+                    this.recursiveDirectoryHandler(dir, (child)=>{child.active=false});
+                    history.replace(path);
+                }
             } else {
                 dir.active = false;
             }
         });
         this.setState({directories : updatedDirectories})
 
+    };
+
+    recursiveDirectoryHandler = (dir, fn) => {
+        if(dir.children && dir.children.length > 0){
+            dir.children.forEach((child)=>{
+                fn(child);
+                this.recursiveDirectoryHandler(child, fn);
+            })
+        }
     };
 
     render() {
