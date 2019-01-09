@@ -98,7 +98,7 @@ export default class Navigation extends React.Component {
                 }
             }
         });
-        history.replace(path);
+        history.push(path);
     };
 
     render() {
