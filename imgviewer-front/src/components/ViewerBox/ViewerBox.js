@@ -15,7 +15,7 @@ export default class ViewerBox extends React.Component {
         const {match} = props;
         let dirId = null;
         if (match && match.params && match.params.id) {
-            dirId = match.params.id;
+            dirId = parseInt(match.params.id);
         }
         this.state = {
             dirId: dirId,
@@ -59,10 +59,10 @@ export default class ViewerBox extends React.Component {
 
     componentDidUpdate(prevProps, prevState){
         const {match} = this.props;
-        if (match && match.params && match.params.id && match.params.id !== prevState.dirId) {
+        if (match && match.params && match.params.id && parseInt(match.params.id) !== prevState.dirId) {
             const {activePage, itemsCountPerPage} = this.state;
             this.setState({
-                dirId: match.params.id,
+                dirId: parseInt(match.params.id),
                 activePage: 1
             });
             this.loadFilesWithPaging(activePage, itemsCountPerPage)
