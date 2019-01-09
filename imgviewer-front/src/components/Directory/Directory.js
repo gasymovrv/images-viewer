@@ -1,7 +1,7 @@
 import React from 'react';
 import Navigation from "../Navigation/Navigation";
 import './style.css'
-import {Route} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 
 
 export default class Directory extends React.Component {
@@ -20,14 +20,13 @@ export default class Directory extends React.Component {
         }
         let children = null;
         if (dir.active && dir.children) {
-            let updatedParentIds = [...parentIds];
-            if(dir.parent && dir.parent.children){
-                updatedParentIds = updatedParentIds.filter((sibling)=>dir.parent.children.indexOf(sibling.id) === -1);
-            }
-            updatedParentIds.push(dir.id);
+            let updatedParentIds = [dir.id, ...parentIds];
             children = (
                 <li>
-                    <Route component={(props)=><Navigation parentIds={updatedParentIds} dirs={dir.children} {...props}/>} />
+                    <Switch>
+                        <Route exact path='/' component={(props)=><Navigation parentIds={updatedParentIds} dirs={dir.children} {...props}/>} />
+                        <Route path={`/dirs/:id(\\d+)`} component={(props)=><Navigation parentIds={updatedParentIds} dirs={dir.children} {...props}/>} />
+                    </Switch>
                 </li>
             )
         }

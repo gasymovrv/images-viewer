@@ -10,13 +10,18 @@ export default class Navigation extends React.Component {
         if(props.dirs){
             dirs = [...props.dirs];
         }
+        let dirId = null;
+        if (props.match && props.match.params && props.match.params.id) {
+            dirId = props.match.params.id;
+        }
         this.state = {
+            dirId: dirId,
             directories: dirs
         }
     }
 
     componentDidMount(){
-        const {directories} = this.state;
+        const {directories, dirId} = this.state;
         const {location} = this.props;
         if (directories === null) {
             findRootDir((dir) => {
@@ -25,9 +30,13 @@ export default class Navigation extends React.Component {
                 if (location && location.search) {
                     const params = new URLSearchParams(location.search.substring(1));
                     const ids = [];
+                    if(dirId){
+                        ids.push(parseInt(dirId));
+                    }
                     for(let value of params.values()) {
                        ids.push(parseInt(value));
                     }
+                    console.log(ids);
                     if(ids && ids.length>0){
                         if(ids.indexOf(updatedDir.id) > -1){
                             updatedDir.active = true;
@@ -37,17 +46,53 @@ export default class Navigation extends React.Component {
                                 child.active = true;
                             }
                         });
-                    } else{
-                        console.log('ids - не массив или не найдено!')
                     }
                 }
                 //Заполняем родителей начиная с root
                 recursiveFillParent(updatedDir);
-                console.log(updatedDir);
                 this.setState({directories: [updatedDir]});
             })
         }
     }
+
+    // componentDidUpdate(prevProps, prevState){
+    //     const {dirId} = this.state;
+    //     const {match, location} = this.props;
+    //     if (match && match.params && match.params.id && match.params.id !== prevState.dirId) {
+    //         findRootDir((dir) => {
+    //             const updatedDir = {...dir};
+    //             //Это условие для восстановления открытых директорий после перезагрузки страницы
+    //             if (location && location.search) {
+    //                 const params = new URLSearchParams(location.search.substring(1));
+    //                 const ids = [];
+    //                 if(dirId){
+    //                     ids.push(parseInt(dirId));
+    //                 }
+    //                 for(let value of params.values()) {
+    //                     ids.push(parseInt(value));
+    //                 }
+    //                 console.log(ids);
+    //                 if(ids && ids.length>0){
+    //                     if(ids.indexOf(updatedDir.id) > -1){
+    //                         updatedDir.active = true;
+    //                     }
+    //                     recursiveChildrenHandler(updatedDir, (child) => {
+    //                         if (ids.indexOf(child.id) > -1) {
+    //                             child.active = true;
+    //                         }
+    //                     });
+    //                 }
+    //             }
+    //             //Заполняем родителей начиная с root
+    //             recursiveFillParent(updatedDir);
+    //             this.setState({
+    //                 dirId: match.params.id,
+    //                 directories: [updatedDir]
+    //             });
+    //         })
+    //     }
+    //
+    // }
 
     clickHandler = (id) => (event) => {
         event.preventDefault();
@@ -59,31 +104,15 @@ export default class Navigation extends React.Component {
         updatedDirectories.forEach((dir)=>{
             if(dir.id === id){
                 dir.active = !dir.active;
-                //Если закрыли директорию
+                //Если закрыли директорию - изменяем id в url на родительский
                 if(!dir.active){
                     if(dir.parent){
                         locationObj.pathname = `/dirs/${dir.parent.id}`;
                     }
                     recursiveChildrenHandler(dir, (child)=>{child.active=false});
                 }
-                //Если открыли директорию
-                else {
-                    //Создаем список параметров с id текущей папки и всех ее родителей (понадобится при перезагрузке страницы)
-                    let ids = [dir.id];
-                    if(parentIds && parentIds.length > 0){
-                        ids.push(...parentIds);
-                    }
-                    console.log(ids);
-                    ids = ids.reduce((result, id, index)=> {
-                        if (index !== ids.length - 1) {
-                            result += `ids=${id}&`;
-                        } else if (index === ids.length - 1) {
-                            result += `ids=${id}`;
-                        }
-                        return result;
-                    }, '?');
-                    locationObj.search = ids;
-                }
+                //Создаем список параметров с id всех родительских директорий (понадобится при перезагрузке страницы)
+                locationObj.search = getParamsString(parentIds, 'parent');
             } else {
                 dir.active = false;
             }
@@ -135,4 +164,19 @@ function recursiveFillParent(dir) {
             recursiveFillParent(child);
         })
     }
+}
+
+function getParamsString(idsArray, name) {
+    let ids = [];
+    if(idsArray && idsArray.length > 0){
+        ids.push(...idsArray);
+    }
+    return ids.reduce((result, id, index)=> {
+        if (index !== ids.length - 1) {
+            result += `${name}=${id}&`;
+        } else if (index === ids.length - 1) {
+            result += `${name}=${id}`;
+        }
+        return result;
+    }, '?');
 }
