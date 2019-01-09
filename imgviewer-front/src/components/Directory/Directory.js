@@ -13,20 +13,16 @@ export default class Directory extends React.Component {
     }
 
     render() {
-        const {dir, onClick, parentIds} = this.props;
+        const {dir, onClick} = this.props;
         let classes = "nav-link";
         if (dir.active) {
             classes += " active";
         }
         let children = null;
         if (dir.active && dir.children) {
-            let updatedParentIds = [dir.id, ...parentIds];
             children = (
                 <li>
-                    <Switch>
-                        <Route exact path='/' component={(props)=><Navigation parentIds={updatedParentIds} dirs={dir.children} {...props}/>} />
-                        <Route path={`/dirs/:id(\\d+)`} component={(props)=><Navigation parentIds={updatedParentIds} dirs={dir.children} {...props}/>} />
-                    </Switch>
+                    <Route path={`/dirs/:id(\\d+)`} component={(props)=><Navigation directories={dir.children} {...props}/>} />
                 </li>
             )
         }
