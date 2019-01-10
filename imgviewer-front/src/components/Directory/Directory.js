@@ -1,7 +1,7 @@
 import React from 'react';
-import Navigation from "../Navigation/Navigation";
+import Navigation from '../Navigation';
 import './style.css'
-import {Route, Switch} from "react-router-dom";
+import {Route} from 'react-router-dom';
 
 
 export default class Directory extends React.Component {

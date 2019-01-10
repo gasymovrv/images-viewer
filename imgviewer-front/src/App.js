@@ -1,29 +1,40 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {HashRouter, Route, Switch} from 'react-router-dom';
-import {Container, Col, Row} from "reactstrap";
+import {Container, Col, Row} from 'reactstrap';
 
-import ViewerBox from "./components/ViewerBox";
-import Navigation from "./components/Navigation";
+import ViewerBox from './components/ViewerBox';
+import Navigation from './components/Navigation';
 
 export default class App extends React.Component {
     render() {
         return (
             <HashRouter>
-                <div className='section'>
-                    <Container fluid>
+                <Fragment>
+                    <Container>
                         <Row>
-                            <Col xs="3" className='nav-sidebar'>
+                            <Col xs="12" className='fixed-header'>
+                                <header>
+                                    <h3>ImagesViewer</h3>
+                                </header>
+                            </Col>
+                        </Row>
+                    </Container>
+                    <Container>
+                        <Row>
+                            <Col xs="3" className='fixed-sidebar'>
                                 <Switch>
-                                    <Route exact path='/' component={(props)=><Navigation directories={null} {...props}/>} />
-                                    <Route path={`/dirs/:id(\\d+)`} component={(props)=><Navigation directories={null} {...props}/>} />
+                                    <Route exact path='/'
+                                           component={(props) => <Navigation directories={null} {...props}/>}/>
+                                    <Route path={`/dirs/:id(\\d+)`}
+                                           component={(props) => <Navigation directories={null} {...props}/>}/>
                                 </Switch>
                             </Col>
-                            <Col xs="9">
+                            <Col xs={{size: 9, offset: 3}}>
                                 <Route path={`/dirs/:id(\\d+)`} component={ViewerBox}/>
                             </Col>
                         </Row>
                     </Container>
-                </div>
+                </Fragment>
             </HashRouter>
         )
     }

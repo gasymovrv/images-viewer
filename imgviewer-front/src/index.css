@@ -2,7 +2,28 @@ body {
     margin: 0;
     padding: 0;
 }
+.fixed-sidebar {
+    position: fixed !important;
+    max-height: calc(90vh);
+    z-index: 1;
+    top: calc(10vh);
+    left: 0;
+    border-right: 2px solid #007bff;
+    overflow-y: auto;
+    overflow-x: auto;
+}
 
-.nav-sidebar {
-    border-right: 2px solid #349ee5;
+.fixed-header {
+    position: fixed !important;
+    color: #dee9ec;
+    text-align: center;
+    z-index: 1;
+    height: calc(10vh);
+    top: 0;
+    left: 0;
+    background-color: #007bff;
+}
+
+.fixed-header h3{
+    font-size: 1.5rem;
 }

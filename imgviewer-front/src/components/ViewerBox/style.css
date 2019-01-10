@@ -1,10 +1,10 @@
 .gallery-block.grid-gallery{
-  padding-bottom: 60px;
-  padding-top: 60px;
+  padding-bottom: 5vh;
+  padding-top: 12vh;
 }
 
 .gallery-block.grid-gallery .heading{
-    margin-bottom: 50px;
+    margin-bottom: 5vh;
     text-align: center;
 }
 
@@ -26,7 +26,12 @@
 .gallery-block.grid-gallery .item{
   margin-bottom: 20px;
 }
-
+.fixed-zoom {
+    position: fixed !important;
+    z-index: 2;
+    top: calc(15vh);
+    right: calc(3vh);
+}
 @media (min-width: 576px) {
 
   .gallery-block.grid-gallery .scale-on-hover:hover{

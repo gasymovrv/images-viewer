@@ -1,8 +1,8 @@
 import React, {Fragment} from 'react';
 import Pagination from 'react-js-pagination';
-import {findFilesByDirectoryId, findFilesWithPaging} from "../../api/filesApi";
-import {Button, Col, Container, Row} from "reactstrap";
-import Item from "../Item";
+import {findFilesByDirectoryId} from "../../api/filesApi";
+import {Button, Container, Row} from 'reactstrap';
+import Item from '../Item';
 
 /**
  * Компонент для отображения галлереи
@@ -88,16 +88,16 @@ export default class ViewerBox extends React.Component {
         return (
             <Fragment>
                 <Row>
+                    <div className="fixed-zoom">
+                        <p>
+                            <Button color="primary" onClick={this.handleZoomPlus}>+</Button>{' '}
+                            <Button color="primary" onClick={this.handleZoomMinus}>-</Button>
+                        </p>
+                    </div>
+                </Row>
+                <Row>
                     <section className="gallery-block grid-gallery">
                         <Container>
-                            <Row>
-                                <Col sm="12" md={{ size: 2, offset: 11 }}>
-                                    <p>
-                                    <Button color="primary" onClick={this.handleZoomPlus}>+</Button>{' '}
-                                    <Button color="primary" onClick={this.handleZoomMinus}>-</Button>
-                                    </p>
-                                </Col>
-                            </Row>
                             <Row>
                                 {imgsOrVideos}
                             </Row>

@@ -1,7 +1,7 @@
 import React from 'react';
-import Directory from "../Directory";
-import {findRootDir} from "../../api/directoriesApi";
-import {recursiveChildrenHandler, recursiveFillParent, recursiveParentsHandler} from "../../helpers/recursive";
+import Directory from '../Directory';
+import {findRootDir} from '../../api/directoriesApi';
+import {recursiveChildrenHandler, recursiveFillParent, recursiveParentsHandler} from '../../helpers/recursive';
 
 
 export default class Navigation extends React.Component {
