@@ -1,7 +1,8 @@
 import React, {Fragment} from 'react';
-import {findFilesByDirectoryId} from "../../api/filesApi";
 import {Badge, Button, Col, Container, Row} from 'reactstrap';
+import {findFilesByDirectoryId} from "../../api/filesApi";
 import Item from '../Item';
+import LightboxContainer from '../LightboxContainer';
 
 /**
  * Компонент для отображения галлереи
@@ -24,7 +25,9 @@ export default class ViewerBox extends React.Component {
             files:[],
             activePage: 1,
             itemsCountPerPage: 10,
-            totalItemsCount: 0
+            totalItemsCount: 0,
+            isOpenViewImg: false,
+            viewImgIndex: 0
         };
     }
 
@@ -54,7 +57,6 @@ export default class ViewerBox extends React.Component {
             document.body.offsetHeight, document.documentElement.offsetHeight,
             document.body.clientHeight, document.documentElement.clientHeight
         );
-        console.log(scrollHeight);
         //Когда прокрутили до самого низа (-50 - чтобы сработало не совсем внизу)
         if (window.pageYOffset >= (scrollHeight - document.documentElement.clientHeight) - 50 && !this.state.loadAppend && !this.state.fullLoad) {
             this.setState((prevState) => ({
@@ -126,10 +128,26 @@ export default class ViewerBox extends React.Component {
             itemsCountPerPage)
     };
 
+    openViewImg=(i)=>(e)=>{
+        e.preventDefault();
+        this.setState({
+            isOpenViewImg: true,
+            viewImgIndex: i
+        })
+    };
+
+    hideViewImg=()=>{
+        this.setState({
+            isOpenViewImg: false,
+            viewImgIndex: 0
+        })
+    };
+
     render() {
-        const {files, totalItemsCount, zoom} = this.state;
-        const imgsOrVideos = files.map((file)=>{
-            return <Item key={file.id} file={file} zoom={zoom}/>
+        const {files, totalItemsCount, zoom, isOpenViewImg, viewImgIndex} = this.state;
+        console.log('ViewerBox.js viewImgIndex=', viewImgIndex);
+        const imgsOrVideos = files.map((file, i)=>{
+            return <Item key={file.id} file={file} zoom={zoom} openViewImg={this.openViewImg(i)}/>
         });
         return (
             <Fragment>
@@ -156,6 +174,7 @@ export default class ViewerBox extends React.Component {
                         </Container>
                     </section>
                 </Row>
+                {isOpenViewImg && <LightboxContainer viewImgIndex={viewImgIndex} images={files} hideViewImg={this.hideViewImg}/>}
             </Fragment>
         )
     }

@@ -11,7 +11,7 @@ export default class Item extends React.Component {
     };
 
     render() {
-        const {file, zoom} = this.props;
+        const {file, zoom, openViewImg} = this.props;
         let content;
         let href = `file:///${file.filePath}`;
         let date = null;
@@ -38,7 +38,7 @@ export default class Item extends React.Component {
             );
         } else {
             content = (
-                <a href={href}>
+                <a href={href} onClick={openViewImg}>
                     <img className="img-fluid image scale-on-hover" src={href}/>
                 </a>
             )
