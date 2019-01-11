@@ -26,12 +26,14 @@
 .gallery-block.grid-gallery .item{
   margin-bottom: 20px;
 }
+
 .fixed-zoom {
     position: fixed !important;
     z-index: 2;
     top: calc(15vh);
     right: calc(3vh);
 }
+
 @media (min-width: 576px) {
 
   .gallery-block.grid-gallery .scale-on-hover:hover{
