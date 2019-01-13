@@ -53,12 +53,12 @@ export default class ViewerBox extends React.Component {
 
     componentDidUpdate(prevProps, prevState){
         const {match} = this.props;
-        const {dirId} = this.state;
-        if (match && match.params && match.params.id && parseInt(match.params.id) !== prevState.dirId) {
+        const newDirId = parseInt(match.params.id);
+        if (match && match.params && match.params.id && newDirId !== prevState.dirId) {
             this.setState({
-                dirId: parseInt(match.params.id)
+                dirId: newDirId
             });
-            this.loadFiles(dirId)
+            this.loadFiles(newDirId);
         }
     }
 

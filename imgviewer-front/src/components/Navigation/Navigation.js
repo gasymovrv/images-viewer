@@ -23,6 +23,7 @@ export default class Navigation extends React.Component {
 
     componentDidMount(){
         const {directories, dirId} = this.state;
+        const {history} = this.props;
         //Если directories === null значит это первое открытие страницы или перезагрузка
         if (directories === null) {
             findRootDir((dir) => {
@@ -38,7 +39,8 @@ export default class Navigation extends React.Component {
                         }
                     });
                     if (!currentDir) {
-                        throw Error(`Директория с id=${dirId} не найдена`)
+                        history.push('/');
+                        throw Error(`Директория с id=${dirId} не найдена, произведен редирект в '/'`)
                     }
                     currentDir.active = true;
                     recursiveParentsHandler(currentDir, (parent) => {
