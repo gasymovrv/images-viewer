@@ -56,7 +56,7 @@ public class FilesTreeVisitor extends SimpleFileVisitor<Path> {
         FileObject resultFileObject = new FileObject();
         File file = pathFile.toFile();
         resultFileObject.fillFromFile(file);
-        resultFileObject.setLastModified(getLastModifiedDateFromMetadata(file));
+//        resultFileObject.setLastModified(getLastModifiedDateFromMetadata(file));
         resultFileObject.setFileSize(attrs.size());
         String ext = file.getName().replaceAll("^.*\\.", "");
         switch (ext.toLowerCase()) {

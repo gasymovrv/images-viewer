@@ -1,9 +1,12 @@
 import React, {Fragment} from 'react';
 import {HashRouter, Route, Switch} from 'react-router-dom';
-import {Container, Col, Row} from 'reactstrap';
+import {Container, Col, Row, Button } from 'reactstrap';
 
 import ViewerBox from './components/ViewerBox';
 import Navigation from './components/Navigation';
+import Header from './components/Header';
+
+
 
 export default class App extends React.Component {
     render() {
@@ -13,9 +16,7 @@ export default class App extends React.Component {
                     <Container>
                         <Row>
                             <Col xs="12" className='fixed-header'>
-                                <header>
-                                    <h3>ImagesViewer</h3>
-                                </header>
+                                <Route component={Header}/>
                             </Col>
                         </Row>
                     </Container>

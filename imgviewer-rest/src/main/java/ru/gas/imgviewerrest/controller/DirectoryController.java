@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.gas.imgviewerrest.entities.Directory;
 import ru.gas.imgviewerrest.service.DirectoryService;
+import ru.gas.imgviewerrest.utils.FileScanner;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public class DirectoryController {
 
     @Autowired
     private DirectoryService directoryService;
+    @Autowired
+    private FileScanner fileScanner;
 
     @GetMapping("/findAll")
     public List<Directory> findAll() {
@@ -39,5 +42,11 @@ public class DirectoryController {
     public Iterable<Directory> findByName(@PathVariable String name) {
         return directoryService.findByName(name);
     }
+
+    @GetMapping("/refresh")
+    public void refresh() {
+        fileScanner.scanAndFillDB();
+    }
+
 
 }

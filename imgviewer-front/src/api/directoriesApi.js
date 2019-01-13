@@ -6,4 +6,8 @@ export function findRootDir(fn) {
         .then(resp => fn(resp));
 }
 
+export function refresh() {
+    return fetch(`${api}/refresh`);
+}
+
 

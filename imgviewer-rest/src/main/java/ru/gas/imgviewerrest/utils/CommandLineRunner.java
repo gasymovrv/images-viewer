@@ -16,11 +16,15 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
     private static final String ERROR_TEXT = "Первым аргументом программы необходимо указать директорию (абсолютный путь)";
     private final FileObjectRepository fileObjectRepository;
     private final DirectoryRepository directoryRepository;
+    private final FileScanner fileScanner;
 
     public CommandLineRunner(FileObjectRepository foRep,
-                             DirectoryRepository dirRep) {
+                             DirectoryRepository dirRep,
+                             FileScanner fileScanner
+    ) {
         this.fileObjectRepository = foRep;
         this.directoryRepository = dirRep;
+        this.fileScanner = fileScanner;
     }
 
     @Override
@@ -32,25 +36,7 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
             log.error(ERROR_TEXT);
             return;
         }
-        File root = null;
-        if (path != null) {
-            root = new File(path);
-        }
-        if (root == null || !root.isDirectory()) {
-            log.error(ERROR_TEXT);
-            return;
-        }
-
-        log.warn(String.format("Запуск сканирования директории: %s", path));
-        Directory rootDirectory = new Directory();
-        rootDirectory.setName(root.getName());
-        rootDirectory.setDirectoryPath(root.getAbsolutePath());
-        Files.walkFileTree(
-                Paths.get(rootDirectory.getDirectoryPath()),
-                new DirectoriesTreeVisitor(rootDirectory));
-        Files.walkFileTree(
-                Paths.get(rootDirectory.getDirectoryPath()),
-                new FilesTreeVisitor(rootDirectory));
-        directoryRepository.save(rootDirectory);
+        fileScanner.setPath(path);
+        fileScanner.scanAndFillDB();
     }
 }
