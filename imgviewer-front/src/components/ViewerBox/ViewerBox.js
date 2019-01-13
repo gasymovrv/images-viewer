@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {Badge, Button, Col, Container, Row} from 'reactstrap';
-import {findFilesByDirectoryId} from "../../api/filesApi";
+import {findAllFilesByDirectoryId} from '../../api/filesApi';
 import Item from '../Item';
 import LightboxContainer from '../LightboxContainer';
 
@@ -19,13 +19,8 @@ export default class ViewerBox extends React.Component {
         }
         this.state = {
             dirId: dirId,
-            loadAppend: false,
-            fullLoad: false,
             zoom: 4,
             files:[],
-            activePage: 1,
-            itemsCountPerPage: 10,
-            totalItemsCount: 0,
             isOpenViewImg: false,
             viewImgIndex: 0
         };
@@ -51,81 +46,30 @@ export default class ViewerBox extends React.Component {
         });
     };
 
-    handleScroll = () => {
-        const scrollHeight = Math.max(
-            document.body.scrollHeight, document.documentElement.scrollHeight,
-            document.body.offsetHeight, document.documentElement.offsetHeight,
-            document.body.clientHeight, document.documentElement.clientHeight
-        );
-        //Когда прокрутили до самого низа (-50 - чтобы сработало не совсем внизу)
-        if (window.pageYOffset >= (scrollHeight - document.documentElement.clientHeight) - 50 && !this.state.loadAppend && !this.state.fullLoad) {
-            this.setState((prevState) => ({
-                activePage: prevState.activePage + 1,
-                loadAppend: true
-            }));
-        }
-    };
-
     componentDidMount(){
-        const {activePage, itemsCountPerPage} = this.state;
-        this.loadFiles(activePage, itemsCountPerPage);
-        window.addEventListener('scroll', this.handleScroll);
+        const {dirId} = this.state;
+        this.loadFiles(dirId);
     }
 
     componentDidUpdate(prevProps, prevState){
         const {match} = this.props;
-        const {loadAppend, activePage, itemsCountPerPage} = this.state;
+        const {dirId} = this.state;
         if (match && match.params && match.params.id && parseInt(match.params.id) !== prevState.dirId) {
             this.setState({
-                dirId: parseInt(match.params.id),
-                activePage: 1
+                dirId: parseInt(match.params.id)
             });
-            this.loadFiles(activePage, itemsCountPerPage)
-        } else if(loadAppend && !prevState.loadAppend && activePage !== prevState.activePage){
-            this.loadFilesWithAppend(activePage, itemsCountPerPage)
+            this.loadFiles(dirId)
         }
     }
 
-    loadFilesWithAppend = (activePage, itemsCountPerPage) => {
-        const {dirId} = this.state;
-        findFilesByDirectoryId(
-            (entities, totalElements) => {
-                this.setState((prevState) => {
-                    if (entities && entities.length>0) {
-                        return {
-                            files: [...prevState.files, ...entities],
-                            totalItemsCount: totalElements,
-                            loadAppend: false,
-                            fullLoad: false
-                        }
-                    } else {
-                        return {
-                            activePage: activePage-1,
-                            loadAppend: false,
-                            fullLoad: true
-                        }
-                    }
-                })
-            },
-            dirId,
-            activePage,
-            itemsCountPerPage)
-    };
-
-    loadFiles = (activePage, itemsCountPerPage) => {
-        const {dirId} = this.state;
-        findFilesByDirectoryId(
-            (entities, totalElements) => {
+    loadFiles = (dirId) => {
+        findAllFilesByDirectoryId(
+            (entities) => {
                 this.setState({
-                    files: [...entities],
-                    totalItemsCount: totalElements,
-                    loadAppend: false,
-                    fullLoad: entities.length === 0
+                    files: [...entities]
                 })
             },
-            dirId,
-            activePage,
-            itemsCountPerPage)
+            dirId)
     };
 
     openViewImg=(i)=>(e)=>{
@@ -144,10 +88,9 @@ export default class ViewerBox extends React.Component {
     };
 
     render() {
-        const {files, totalItemsCount, zoom, isOpenViewImg, viewImgIndex} = this.state;
-        console.log('ViewerBox.js viewImgIndex=', viewImgIndex);
+        const {files, zoom, isOpenViewImg, viewImgIndex} = this.state;
         const imgsOrVideos = files.map((file, i)=>{
-            return <Item key={file.id} file={file} zoom={zoom} openViewImg={this.openViewImg(i)}/>
+            return <Item key={file.id} index={i} file={file} zoom={zoom} openViewImg={this.openViewImg(i)}/>
         });
         return (
             <Fragment>
@@ -164,8 +107,7 @@ export default class ViewerBox extends React.Component {
                         <Container>
                             <Row style={{marginBottom: 'calc(2vh)'}}>
                                 <Col xs="12">
-                                    <h5 style={{display:'inline'}}>Всего объектов: <Badge color="secondary">{totalItemsCount}</Badge></h5>
-                                    <h5 style={{display:'inline'}}> Показано объектов: <Badge color="secondary">{files.length}</Badge></h5>
+                                    <h5 style={{display:'inline'}}>Всего объектов: <Badge color="secondary">{files.length}</Badge></h5>
                                 </Col>
                             </Row>
                             <Row>
@@ -177,9 +119,5 @@ export default class ViewerBox extends React.Component {
                 {isOpenViewImg && <LightboxContainer viewImgIndex={viewImgIndex} images={files} hideViewImg={this.hideViewImg}/>}
             </Fragment>
         )
-    }
-
-    componentWillUnmount(){
-        window.removeEventListener('scroll', this.handleScroll);
     }
 }

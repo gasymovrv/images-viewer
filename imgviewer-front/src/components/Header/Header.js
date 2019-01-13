@@ -6,8 +6,8 @@ import {BeatLoader} from 'react-spinners';
 
 const override = css`
     display: block;
-    margin-left: 2vh;
-    margin-top: 1vh;
+    margin-left: calc(2vh);
+    margin-top: calc(1vh);
 `;
 
 export default class Header extends React.Component {

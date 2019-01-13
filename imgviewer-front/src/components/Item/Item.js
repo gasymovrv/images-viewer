@@ -1,18 +1,65 @@
 import React from 'react';
 import {Button, Card, CardBody, CardSubtitle, CardText, CardTitle, Col, Collapse} from 'reactstrap';
+import {FadeLoader} from 'react-spinners';
+
 
 export default class Item extends React.Component {
     state = {
-        collapseDetails: false
+        collapseDetails: false,
+        isScreenVisible: false,
+        loading: false
     };
 
-    toggleDetails = ()=>{
-        this.setState({ collapseDetails: !this.state.collapseDetails });
+    componentDidMount(){
+        window.addEventListener('scroll', this.handleScroll);
+        const isInViewport = this.isInViewport();
+        this.setState({
+            isScreenVisible: isInViewport,
+            loading: isInViewport
+        })
+    }
+
+    handleScroll = () => {
+        if (!this.state.isScreenVisible) {
+            const position = window.pageYOffset;
+            setTimeout(() => {
+                if (position === window.pageYOffset) {
+                    const isInViewport = this.isInViewport(window.pageYOffset);
+                    this.setState({
+                        isScreenVisible: isInViewport,
+                        loading: isInViewport
+                    });
+                }
+            }, 500);
+        }
+    };
+
+    handleImageLoaded = () => {
+        this.setState({ loading: false });
+    };
+
+    isInViewport = (offset = 0) => {
+        if (!this.thisItem) return false;
+        const top = this.thisItem.getBoundingClientRect().top;
+        //top - отступ элемента от верха окна (бывает отрицательным если прокрутили ниже этого элемента)
+        //offset = pageYOffset - текущее положение прокрутки (до верхней точки окна)
+        //document.documentElement.clientHeight - высота окна
+        return top+offset >= offset && top+offset <= offset+document.documentElement.clientHeight;
+    };
+
+    refHandle = (node) => {
+        this.thisItem = node;
+    };
+
+    toggleDetails = () => {
+        this.setState({collapseDetails: !this.state.collapseDetails});
     };
 
     render() {
         const {file, zoom, openViewImg} = this.props;
+        const {isScreenVisible, loading} = this.state;
         let content;
+        let hrefIsVisible = isScreenVisible ? `file:///${file.filePath}` : '';
         let href = `file:///${file.filePath}`;
         let date = null;
         let fileSize = 0;
@@ -31,24 +78,35 @@ export default class Item extends React.Component {
         }
         if (file.isVideo) {
             content = (
-                <video className="img-fluid image scale-on-hover" controls>
-                    <source src={href}/>
+                <video src={hrefIsVisible} className="img-fluid image scale-on-hover" controls>
                     Тег video не поддерживается этим браузером.
                 </video>
             );
         } else {
             content = (
-                <a href={href} onClick={openViewImg}>
-                    <img className="img-fluid image scale-on-hover" src={href}/>
+                <a href='#' onClick={openViewImg}>
+                    <img className="img-fluid image scale-on-hover"
+                         src={hrefIsVisible}
+                         onLoad={this.handleImageLoaded}
+                    />
+                    {!isScreenVisible&&<div>Изображение</div>}
+                    <FadeLoader
+                        sizeUnit={'px'}
+                        size={10}
+                        color={'#007bff'}
+                        loading={loading}/>
                 </a>
             )
         }
         return (
             <Col lg={zoom} className="item">
-                <div className="lightbox">
+                <div className="lightbox" ref={this.refHandle}>
                     {content}
-                    <Button color="primary" onClick={this.toggleDetails}
-                            style={{margin: '1rem'}}>Подробнее</Button>
+                    <Button color="secondary"
+                            onClick={this.toggleDetails}
+                            style={{margin: '1rem'}}>
+                        Подробнее
+                    </Button>
                     <Collapse isOpen={this.state.collapseDetails}>
                         <Card>
                             <CardBody>
@@ -63,6 +121,10 @@ export default class Item extends React.Component {
                 {date}
             </Col>
         )
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener('scroll', this.handleScroll);
     }
 };
 
