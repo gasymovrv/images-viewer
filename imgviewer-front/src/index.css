@@ -20,5 +20,9 @@ body {
     height: 60px;
     top: 0;
     left: 0;
-    background-color: #007bff;
+    background-color: #5a6268;
+}
+
+.main-box {
+    margin-top: 70px;
 }

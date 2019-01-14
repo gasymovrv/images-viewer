@@ -1,5 +1,14 @@
 import React from 'react';
-import {Button, Nav, Navbar, NavbarBrand, NavItem} from 'reactstrap';
+import {
+    ButtonDropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Nav,
+    Navbar,
+    NavbarBrand,
+    NavItem
+} from 'reactstrap';
 import {css} from '@emotion/core';
 import {refresh} from '../../api/directoriesApi';
 import {BeatLoader} from 'react-spinners';
@@ -12,7 +21,8 @@ const override = css`
 
 export default class Header extends React.Component {
     state = {
-        refreshing: false
+        refreshing: false,
+        menuOpen: false
     };
 
     refreshDirectories = () => {
@@ -25,14 +35,27 @@ export default class Header extends React.Component {
                     alert('Ошибка обновления (код 1)');
                 }
                 this.setState((prSt) => ({refreshing: !prSt.refreshing}));
-                history.push('/')
+                history.replace('/');
+                location.reload();
             })
             .catch((err) => {
                 this.setState((prSt) => ({refreshing: !prSt.refreshing}));
                 console.log(err);
                 alert('Ошибка обновления (код 2)');
-                history.push('/')
+                history.replace('/');
+                location.reload();
             });
+    };
+
+    setRootDirectory = () => {
+        const {history} = this.props;
+        history.push('/set-root');
+    };
+
+    toggleMenu = () => {
+        this.setState({
+            menuOpen: !this.state.menuOpen
+        });
     };
 
     render() {
@@ -42,9 +65,16 @@ export default class Header extends React.Component {
                 <NavbarBrand href="#/">ImagesViewer</NavbarBrand>
                 <Nav className="mr-auto" navbar>
                     <NavItem>
-                        <Button onClick={this.refreshDirectories} color="light">
-                            Обновить
-                        </Button>
+                        <ButtonDropdown isOpen={this.state.menuOpen} toggle={this.toggleMenu}>
+                            <DropdownToggle color="primary" caret>
+                                Опции
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem onClick={this.refreshDirectories}>Обновить</DropdownItem>
+                                <DropdownItem divider />
+                                <DropdownItem onClick={this.setRootDirectory}>Изменить корневую директорию</DropdownItem>
+                            </DropdownMenu>
+                        </ButtonDropdown>
                     </NavItem>
                     <NavItem>
                         {refreshing &&

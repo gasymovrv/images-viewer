@@ -85,10 +85,11 @@ public class FilesTreeVisitor extends SimpleFileVisitor<Path> {
         }
     }
 
-    //todo Очень замедляет сканирование
-    //Если не используем, то нужно сменить метод репозитория
-    //findByDirectoryIdOrderByLastModifiedAsc (сортировка по дате съемки) на
-    //findByDirectoryIdOrderByNameAsc (сортировка по имени файла)
+    /** Очень замедляет сканирование
+    * Если не используем, то нужно сменить метод репозитория
+    * findByDirectoryIdOrderByLastModifiedAsc (сортировка по дате съемки) на
+    * findByDirectoryIdOrderByNameAsc (сортировка по имени файла)
+    */
     private LocalDateTime getLastModifiedDateFromMetadata(File f){
         LocalDateTime date = null;
         try {

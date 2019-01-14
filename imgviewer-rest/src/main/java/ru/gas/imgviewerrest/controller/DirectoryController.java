@@ -2,10 +2,7 @@ package ru.gas.imgviewerrest.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.gas.imgviewerrest.entities.Directory;
 import ru.gas.imgviewerrest.service.DirectoryService;
 import ru.gas.imgviewerrest.utils.FileScanner;
@@ -46,6 +43,12 @@ public class DirectoryController {
     @GetMapping("/refresh")
     public void refresh() {
         fileScanner.scanAndFillDB();
+    }
+
+    @PostMapping("/setRoot")
+    public boolean setRoot(@RequestParam String path) {
+        fileScanner.setPath(path);
+        return fileScanner.scanAndFillDB();
     }
 
 

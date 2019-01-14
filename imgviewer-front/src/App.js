@@ -5,6 +5,7 @@ import {Container, Col, Row, Button } from 'reactstrap';
 import ViewerBox from './components/ViewerBox';
 import Navigation from './components/Navigation';
 import Header from './components/Header';
+import InputRoot from "./components/InputRoot";
 
 
 
@@ -30,8 +31,9 @@ export default class App extends React.Component {
                                            component={(props) => <Navigation directories={null} {...props}/>}/>
                                 </Switch>
                             </Col>
-                            <Col xs={{size: 9, offset: 3}}>
+                            <Col xs={{size: 9, offset: 3}} className="main-box">
                                 <Route path={`/dirs/:id(\\d+)`} component={ViewerBox}/>
+                                <Route path='/set-root' component={InputRoot}/>
                             </Col>
                         </Row>
                     </Container>

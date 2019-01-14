@@ -27,7 +27,12 @@ export default class Navigation extends React.Component {
         //Если directories === null значит это первое открытие страницы или перезагрузка
         if (directories === null) {
             findRootDir((dir) => {
+                if(!dir){
+                    history.push('/set-root');
+                    return;
+                }
                 const rootDir = {...dir};
+                localStorage.setItem('rootPath', rootDir.directoryPath);
                 //Заполняем родителей начиная с root
                 recursiveFillParent(rootDir);
                 //Если в url был id, то открываем эту директорию и все ее родительские директории
