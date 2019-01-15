@@ -46,6 +46,7 @@ public class FilesTreeVisitor extends SimpleFileVisitor<Path> {
             case "flv":
             case "mpeg":
             case "mpg":
+            case "mp4":
             case "3gp":
                 fillRootFromPath(file, attrs);
         }
@@ -62,6 +63,7 @@ public class FilesTreeVisitor extends SimpleFileVisitor<Path> {
         switch (ext.toLowerCase()) {
             case "mov":
             case "mpg":
+            case "mp4":
             case "3gp":
             case "wmv":
             case "mkv":
