@@ -59,7 +59,7 @@ public class FileScanner {
             log.warn(String.format("Успешно просканировано и сохранено в БД: %s", path));
             return true;
         } catch (Exception e) {
-            log.error(String.format("Ошибка при сканировании директории \'%s\' : ", path), e);
+            log.error(String.format("Ошибка при сканировании директории '%s' : ", path), e);
             return false;
         }
     }
